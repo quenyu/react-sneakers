@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import remove from "../assets/remove.svg";
-import sneakers1 from "../assets/sneakers1.jpg";
+// import sneakers1 from "../assets/sneakers1.jpg";
 import rightArrow from "../assets/rightArrow.svg";
 
-const Drawer = () => {
+const Drawer = ({ items = [], onClose, onRemove, hideOverlay }) => {
+
   return (
-    <div className="overlay" style={{display: "none"}}>
+    <div className="overlay">
       <div className="drawer">
         <h2 className='flex items-center justify-between text-2xl font-bold'>
           Корзина
-          <img className='cursor-pointer' src={remove} alt="remove"/>
+          <img onClick={hideOverlay} className='cursor-pointer' src={remove} alt="remove" />
         </h2>
 
         <div className="items">
-
-          <div className="cart-item flex items-center py-6 px-5">
-            <img className="mr-5" width={70} height={70} src={sneakers1} alt="sneakers1"/>
-            <div>
-              <p>Мужские кроссовки Nike Air Max 270</p>
-              <b>12 999 руб.</b>
-            </div>
-            <img className="cursor-pointer" src={remove} alt="remove"/>
-          </div>
-
+            {items.map((obj, index) => {
+              return (
+                <div key={index} className="cart-item flex items-center py-6 px-5 mb-5">
+                  <img className="mr-5" width={70} height={70} src={obj.imageUrl} alt="sneakers1" />
+                  <div>
+                    <p>{obj.title}</p>
+                    <b>{obj.price} руб.</b>
+                  </div>
+                  <img className="cursor-pointer" onClick={() => onRemove(index)} src={remove} alt="remove" />
+                </div>
+              )
+            })}
         </div>
 
         <div className="cartTotalBlock">
@@ -41,7 +44,7 @@ const Drawer = () => {
           </ul>
           <button className='greenBtn'>
             <span>Оформить заказ</span>
-            <img src={rightArrow} alt="arrow"/>
+            <img src={rightArrow} alt="arrow" />
           </button>
         </div>
       </div>

@@ -1,0 +1,21 @@
+.card {
+    border: 1px solid #f3f3f3;
+    border-radius: 40px;
+    transition: box-shadow, transform .2s ease-out;
+    position: relative;
+    padding: 0.875rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.favorite {
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.card:hover {
+    box-shadow: 0 14px 30px 0 rgba(0, 0, 0, 0.05);
+    transform: translateY(-5px);
+}

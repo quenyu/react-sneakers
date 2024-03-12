@@ -1,10 +1,16 @@
 import React from 'react';
+
 import logo from "../assets/logo.png";
 import cart from "../assets/cart.svg";
 import favorite from "../assets/favorite.svg";
 import user from "../assets/user.svg";
 
-const Header = () => {
+const Header = ({ onClickCart }) => {
+  const hideOverlay = () => {
+    onClickCart()
+    document.body.style.overflow = 'hidden';
+  };
+
   return (
     <header className='header flex justify-between align-center pb-11'>
       <div className='headerLeft flex items-center'>
@@ -15,9 +21,9 @@ const Header = () => {
         </div>
       </div>
       <ul className='headerRight flex items-center gap-8'>
-        <li className='flex'><img width={18} height={18} src={cart} alt="cart"/><span>1205 руб.</span></li>
-        <li className='flex'><img width={18} height={18} src={favorite} alt="favorite"/><span>Закладки</span></li>
-        <li className='flex'><img width={18} height={18} src={user} alt="user"/><span>Профиль</span></li>
+        <li onClick={() => hideOverlay()} className='cursor-pointer'><img width={18} height={18} src={cart} alt="cart"/><span>1205 руб.</span></li>
+        <li className='cursor-pointer'><img width={18} height={18} src={favorite} alt="favorite"/><span>Закладки</span></li>
+        <li className='cursor-pointer'><img width={18} height={18} src={user} alt="user"/><span>Профиль</span></li>
       </ul>
     </header>
   );
