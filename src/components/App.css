@@ -19,6 +19,12 @@
     z-index: 1;
 }
 
+.btn-favorite {
+    border: 1px solid #f8f8f8;
+    border-radius: 7px;
+    padding: 6px;
+}
+
 .carousel {
     position: relative;
     width: 100%;
@@ -150,5 +156,26 @@
 }
 
 .greenBtn:active {
+    background-color: #8cbe4e;
+}
+
+.greenBtn_cart {
+    width: 270px;
+    transition: background-color .2s ease-in;
+}
+
+.greenBtn_cart:hover {
+    background-color: #a7e25e;
+}
+
+.greenBtn_cart img {
+    transition: transform .2s ease-in;
+}
+
+.greenBtn_cart:hover img {
+    transform: translateX(-5px);
+}
+
+.greenBtn_cart:active {
     background-color: #8cbe4e;
 }

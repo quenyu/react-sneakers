@@ -1,9 +1,9 @@
 import React from 'react';
 
-import logo from "../assets/logo.png";
-import cart from "../assets/cart.svg";
-import favorite from "../assets/favorite.svg";
-import user from "../assets/user.svg";
+import logo from "./../assets/logo.png";
+import cart from "./../assets/cart.svg";
+import favorite from "./../assets/favorite.svg";
+import user from "./../assets/user.svg";
 
 const Header = ({ onClickCart }) => {
   const hideOverlay = () => {
