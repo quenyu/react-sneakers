@@ -5,11 +5,30 @@ import Card from "./../components/Card/Card";
 import search from './../assets/search.svg'
 import remove from "./../assets/remove.svg";
 
-const Home = ({ items, onAddToCart }) => {
+const Home = ({ items, onAddToCart, cartItems, isLoading }) => {
     const [searchValue, setSearchValue] = useState('');
 
     const onChangeSearchInput = (e) => {
         setSearchValue(e.target.value)
+    }
+
+    const renderItems = () => {
+
+        const filteredItems = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
+
+        return (isLoading ? [...Array(10)] : filteredItems).map((item, index) => (
+            <Card
+                key={index}
+                // id={item?.id}
+                // title={item?.title}
+                // price={item?.price}
+                // imageUrl={item?.imageUrl}
+                onAddToCart={onAddToCart}
+                added={cartItems.some((obj) => +obj.id === +item.id)}
+                loading={isLoading}
+                {...item}
+            />
+        ))
     }
 
     return (
@@ -24,17 +43,7 @@ const Home = ({ items, onAddToCart }) => {
             </div>
 
             <div className='sneakers'>
-                {items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
-                    .map((item) => (
-                        <Card
-                            key={item.id}
-                            id={item.id}
-                            title={item.title}
-                            price={item.price}
-                            imageUrl={item.imageUrl}
-                            onAddToCart={onAddToCart}
-                        />
-                    ))}
+                {renderItems()}
             </div>
         </Fragment>
     )

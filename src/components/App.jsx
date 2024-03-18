@@ -10,7 +10,9 @@ export default function App() {
   const [cartOpened, setCartOpened] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
   // const [favorites, setFavorites] = useState([]);
+
 
   const hideOverlay = () => {
     onClose()
@@ -45,9 +47,17 @@ export default function App() {
   }
 
   useEffect(() => {
-    axios.get("https://65ee252d08706c584d9b1e3e.mockapi.io/items")
-      .then((res) => setItems(res.data))
-    axios.get("https://65ee252d08706c584d9b1e3e.mockapi.io/cart").then(res => setCartItems(res.data))
+    async function fetchData () {
+      const cartResponse = await axios.get("https://65ee252d08706c584d9b1e3e.mockapi.io/cart")
+      const itemsResponse = await axios.get("https://65ee252d08706c584d9b1e3e.mockapi.io/items")
+      
+      setIsLoading(false)
+
+      setCartItems(cartResponse.data)
+      setItems(itemsResponse.data)
+    }
+
+    fetchData();
   }, []);
 
   return (
@@ -63,6 +73,8 @@ export default function App() {
       <Home
         items={items}
         onAddToCart={onAddToCart}
+        cartItems={cartItems}
+        isLoading={isLoading}
       />
     </div>
   )
