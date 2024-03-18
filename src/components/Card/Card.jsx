@@ -11,6 +11,8 @@ const Card = ({ id, title, price, imageUrl, onAddToCart }) => {
   const [isAdded, setIsAdded] = useState(false);
   // const [isFavorite, setIsFavorite] = useState(false);
 
+  const getCart = () => { }
+
   const onClickPlus = () => {
     setIsAdded(!isAdded);
     onAddToCart({ id, title, price, imageUrl });
