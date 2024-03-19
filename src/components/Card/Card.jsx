@@ -20,7 +20,6 @@ const Card = ({ id, title, price, imageUrl, onAddToCart, added = false, loading 
   // const onClickLike = () => {
   //   setIsFavorite(!isFavorite)
   // }
-  console.log(added)
   return (
     <div className={styles.card}>
       {loading ? <ContentLoader

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Header from "./Header.jsx";
 import Drawer from "./Drawer.jsx";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Home from '../pages/Home.jsx';
 
 export default function App() {
@@ -13,6 +13,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   // const [favorites, setFavorites] = useState([]);
 
+  const AppContext = createContext({ items, cartItems });
 
   const hideOverlay = () => {
     onClose()
@@ -47,10 +48,10 @@ export default function App() {
   }
 
   useEffect(() => {
-    async function fetchData () {
+    async function fetchData() {
       const cartResponse = await axios.get("https://65ee252d08706c584d9b1e3e.mockapi.io/cart")
       const itemsResponse = await axios.get("https://65ee252d08706c584d9b1e3e.mockapi.io/items")
-      
+
       setIsLoading(false)
 
       setCartItems(cartResponse.data)
@@ -60,22 +61,25 @@ export default function App() {
     fetchData();
   }, []);
 
+  // console.log(useContext)
   return (
-    <div className="wrapper px-14 py-16">
-      {cartOpened ? <Drawer
-        items={cartItems}
-        onClose={onClose}
-        onRemove={onRemoveItem}
-        hideOverlay={hideOverlay} /> : null}
+    <AppContext.Provider>
+      <div className="wrapper px-14 py-16">
+        {cartOpened ? <Drawer
+          items={cartItems}
+          onClose={onClose}
+          onRemove={onRemoveItem}
+          hideOverlay={hideOverlay} /> : null}
 
-      <Header onClickCart={() => setCartOpened(true)} />
+        <Header onClickCart={() => setCartOpened(true)} />
 
-      <Home
-        items={items}
-        onAddToCart={onAddToCart}
-        cartItems={cartItems}
-        isLoading={isLoading}
-      />
-    </div>
+        <Home
+          items={items}
+          onAddToCart={onAddToCart}
+          cartItems={cartItems}
+          isLoading={isLoading}
+        />
+      </div>
+    </AppContext.Provider> 
   )
 }
