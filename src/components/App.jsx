@@ -3,17 +3,15 @@ import axios from 'axios';
 
 import Header from "./Header.jsx";
 import Drawer from "./Drawer.jsx";
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Home from '../pages/Home.jsx';
+import AppContext from '../context.jsx';
 
 export default function App() {
   const [cartOpened, setCartOpened] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
-  // const [favorites, setFavorites] = useState([]);
-
-  const AppContext = createContext({ items, cartItems });
 
   const hideOverlay = () => {
     onClose()
@@ -63,10 +61,9 @@ export default function App() {
 
   // console.log(useContext)
   return (
-    <AppContext.Provider>
+    <AppContext.Provider value={{items, cartItems, setCartOpened, setCartItems}}>
       <div className="wrapper px-14 py-16">
         {cartOpened ? <Drawer
-          items={cartItems}
           onClose={onClose}
           onRemove={onRemoveItem}
           hideOverlay={hideOverlay} /> : null}

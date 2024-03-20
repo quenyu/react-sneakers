@@ -1,11 +1,13 @@
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
+import AppContext from "../context";
 
 import Card from "./../components/Card/Card";
 
 import search from './../assets/search.svg'
 import remove from "./../assets/remove.svg";
 
-const Home = ({ items, onAddToCart, cartItems, isLoading }) => {
+const Home = ({ onAddToCart, cartItems, isLoading }) => {
+    const { items } = useContext(AppContext);
     const [searchValue, setSearchValue] = useState('');
 
     const onChangeSearchInput = (e) => {
@@ -13,16 +15,11 @@ const Home = ({ items, onAddToCart, cartItems, isLoading }) => {
     }
 
     const renderItems = () => {
-
         const filteredItems = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
 
         return (isLoading ? [...Array(10)] : filteredItems).map((item, index) => (
             <Card
                 key={index}
-                // id={item?.id}
-                // title={item?.title}
-                // price={item?.price}
-                // imageUrl={item?.imageUrl}
                 onAddToCart={onAddToCart}
                 added={cartItems.some((obj) => +obj.id === +item.id)}
                 loading={isLoading}
