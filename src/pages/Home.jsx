@@ -20,8 +20,12 @@ const Home = ({ onAddToCart, cartItems, isLoading }) => {
         return (isLoading ? [...Array(10)] : filteredItems).map((item, index) => (
             <Card
                 key={index}
+                // id={item?.id}
+                // title={item?.title}
+                // price={item?.price}
+                // imageUrl={item?.imageUrl}
                 onAddToCart={onAddToCart}
-                added={cartItems.some((obj) => +obj.id === +item.id)}
+                added={cartItems.some((obj) => +obj.id === item.id)}
                 loading={isLoading}
                 {...item}
             />

@@ -8,13 +8,12 @@ import unliked from "./../../assets/unliked.png";
 import checked from './../../assets/checked.svg';
 
 import styles from './Card.module.css'
-
-const Card = ({ id, title, price, imageUrl, onAddToCart, added = false, loading }) => {
+//  id, title, price, imageUrl,
+const Card = ({ onAddToCart, added = false, loading, ...obj }) => {
   const [isAdded, setIsAdded] = useState(added);
-
   const onClickPlus = () => {
     setIsAdded(!isAdded);
-    onAddToCart({ id, title, price, imageUrl });
+    onAddToCart(obj);
   }
 
   // const onClickLike = () => {
@@ -39,14 +38,14 @@ const Card = ({ id, title, price, imageUrl, onAddToCart, added = false, loading 
       </ContentLoader>
         :
         <Fragment>
-          <img src={imageUrl} alt={imageUrl} />
+          <img src={obj.imageUrl} alt={obj.imageUrl} />
           <h2 className='py-3.5 flex-1'>
-            {title}
+            {obj.title}
           </h2>
           <div className='flex justify-between items-center'>
             <div>
               <span className='text-xs uppercase text-neutral-400'>Цена:</span>
-              <p className='font-bold'>{price} руб.</p>
+              <p className='font-bold'>{obj.price} руб.</p>
             </div>
             <img onClick={onClickPlus} className='cursor-pointer' src={added ? checked : plus} alt="addToCart" />
           </div>

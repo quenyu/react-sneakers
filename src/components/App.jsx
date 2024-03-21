@@ -24,7 +24,8 @@ export default function App() {
       `).then(console.log("deleted"));
       setCartItems((prev) => prev.filter((item) => +item.id !== +obj.id))
     } else {
-      axios.post("https://65ee252d08706c584d9b1e3e.mockapi.io/cart", obj);
+      axios.post("https://65ee252d08706c584d9b1e3e.mockapi.io/cart", { id: 10, ...obj });
+      console.log("updated")
       setCartItems((prev) => [...prev, obj])
     }
     // try {
@@ -35,10 +36,18 @@ export default function App() {
     // }
   }
 
-  const onRemoveItem = (id) => {
-    axios.delete(`https://65ee252d08706c584d9b1e3e.mockapi.io/cart/${id}
-  `).then(console.log("deleted"));
-    setCartItems((prev) => prev.filter(item => item.id !== id))
+  const onRemoveItem = async (id) => {
+    try {
+      // const response = await axios.get(`https://65ee252d08706c584d9b1e3e.mockapi.io/cart?id=${id}`);
+      // const { data } = response.data;
+      const { data } = await axios.get(`https://65ee252d08706c584d9b1e3e.mockapi.io/cart?id=${id}`);
+
+      axios.delete(`https://65ee252d08706c584d9b1e3e.mockapi.io/cart/${data[0].index}
+      `);
+      setCartItems((prev) => prev.filter(item => +item.id !== +id))
+    } catch (e) {
+      console.log("ERROR: ", e)
+    }
   }
 
   const onClose = () => {
@@ -61,7 +70,7 @@ export default function App() {
 
   // console.log(useContext)
   return (
-    <AppContext.Provider value={{items, cartItems, setCartOpened, setCartItems}}>
+    <AppContext.Provider value={{ items, cartItems, setCartOpened, setCartItems }}>
       <div className="wrapper px-14 py-16">
         {cartOpened ? <Drawer
           onClose={onClose}
@@ -77,6 +86,6 @@ export default function App() {
           isLoading={isLoading}
         />
       </div>
-    </AppContext.Provider> 
+    </AppContext.Provider>
   )
 }

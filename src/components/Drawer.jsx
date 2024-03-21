@@ -10,9 +10,16 @@ import Info from './Info';
 
 const Drawer = ({ onClose, onRemove, hideOverlay }) => {
   const { cartItems, setCartItems } = useContext(AppContext);
+  const [orderId, setOrderId] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const onClickOrder = () => {
+  const onClickOrder = async () => {
+    const response = await fetch('http://localhost:3000/orders', cartItems, {
+      method: "GET",
+      // body: JSON.stringify(cartItems)
+    })
+    console.log(response)
+    // const { data } = POST('http://localhost:3000/orders', cartItems)
     setIsCompleted(true);
     setCartItems([]);
   }
@@ -61,11 +68,11 @@ const Drawer = ({ onClose, onRemove, hideOverlay }) => {
             </div>
           </Fragment>
           :
-          <Info 
-          title={isCompleted ? "Заказ оформлен!" : "Корзина пустая"} 
-          description={isCompleted ? "Ваш заказ #18 скоро будет передан курьерской доставке" : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."} 
-          image={isCompleted ? completedOrder : emptyCart}
-          hideOverlay={hideOverlay}
+          <Info
+            title={isCompleted ? "Заказ оформлен!" : "Корзина пустая"}
+            description={isCompleted ? "Ваш заказ #18 скоро будет передан курьерской доставке" : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
+            image={isCompleted ? completedOrder : emptyCart}
+            hideOverlay={hideOverlay}
           />
           // <div className='empty-cart flex items-center justify-center flex-col h-full text-center'>
           //   <img className='mb-5' width={120} height={120} src={emptyCart} alt="emptyCart" />
