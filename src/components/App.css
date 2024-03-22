@@ -147,35 +147,43 @@
     transition: background-color .2s ease-in;
 }
 
-.greenBtn:hover {
-    background-color: #a7e25e;
-}
-
-.greenBtn:hover img {
-    transform: translateX(5px);
-}
-
-.greenBtn:active {
-    background-color: #8cbe4e;
-}
-
-.greenBtn_cart {
-    width: 270px;
-    transition: background-color .2s ease-in;
-}
-
 .greenBtn_cart:hover {
     background-color: #a7e25e;
 }
 
-.greenBtn_cart img {
-    transition: transform .2s ease-in;
-}
-
 .greenBtn_cart:hover img {
-    transform: translateX(-5px);
+    transform: translateX(5px);
 }
 
 .greenBtn_cart:active {
+    background-color: #8cbe4e;
+}
+
+.greenBtn_cart:disabled {
+    background-color: #323b2786;
+}
+
+.greenBtn_cart:disabled img {
+    transform: none;
+}
+
+.greenBtn_info {
+    width: 270px;
+    transition: background-color .2s ease-in;
+}
+
+.greenBtn_info:hover {
+    background-color: #a7e25e;
+}
+
+.greenBtn_info img {
+    transition: transform .2s ease-in;
+}
+
+.greenBtn_info:hover img {
+    transform: translateX(-5px);
+}
+
+.greenBtn_info:active {
     background-color: #8cbe4e;
 }

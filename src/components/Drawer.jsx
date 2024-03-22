@@ -1,27 +1,51 @@
 import { Fragment, useContext, useState } from 'react';
+import { useCart } from './../hooks/useCart';
+import axios from 'axios';
 
 import remove from "./../assets/remove.svg";
 import rightArrow from "./../assets/rightArrow.svg";
 import emptyCart from './../assets/empty-cart.png';
 import completedOrder from './../assets/completed-order.png'
 
-import AppContext from '../context';
 import Info from './Info';
 
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 const Drawer = ({ onClose, onRemove, hideOverlay }) => {
-  const { cartItems, setCartItems } = useContext(AppContext);
   const [orderId, setOrderId] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { cartItems, setCartItems, totalPrice } = useCart();
 
   const onClickOrder = async () => {
-    const response = await fetch('http://localhost:3000/orders', cartItems, {
-      method: "GET",
-      // body: JSON.stringify(cartItems)
-    })
-    console.log(response)
-    // const { data } = POST('http://localhost:3000/orders', cartItems)
-    setIsCompleted(true);
-    setCartItems([]);
+    try {
+      setIsLoading(true);
+      const fetchData = await fetch('http://localhost:3000/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cartItems)
+      });
+      const response = await fetch('http://localhost:3000/orders');
+      const data = await response.json();
+      
+      // Костыль
+      for (let i = 1; i <= cartItems.length; i++) {
+        await axios.delete(`https://65ee252d08706c584d9b1e3e.mockapi.io/cart/${i}`)
+        await delay(1000);
+      }
+
+      setOrderId(data.length)
+      setIsCompleted(true);
+      setCartItems([]);
+    } catch (e) {
+      console.log("ERROR: ", e)
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -53,15 +77,15 @@ const Drawer = ({ onClose, onRemove, hideOverlay }) => {
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b>21 498 руб. </b>
+                  <b>{totalPrice} руб. </b>
                 </li>
                 <li className='flex'>
                   <span>Налог 5%:</span>
                   <div></div>
-                  <b>1074 руб.</b>
+                  <b>{(totalPrice*0.05).toFixed()} руб.</b>
                 </li>
               </ul>
-              <button className='greenBtn' onClick={onClickOrder}>
+              <button disabled={isLoading} className='greenBtn greenBtn_cart' onClick={onClickOrder}>
                 <span>Оформить заказ</span>
                 <img src={rightArrow} alt="arrow" />
               </button>
@@ -70,7 +94,7 @@ const Drawer = ({ onClose, onRemove, hideOverlay }) => {
           :
           <Info
             title={isCompleted ? "Заказ оформлен!" : "Корзина пустая"}
-            description={isCompleted ? "Ваш заказ #18 скоро будет передан курьерской доставке" : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
+            description={isCompleted ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
             image={isCompleted ? completedOrder : emptyCart}
             hideOverlay={hideOverlay}
           />
